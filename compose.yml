@@ -1,0 +1,10 @@
+services:
+  balancer:
+    image: golang
+    volumes:
+      - ./src:/go/src
+    entrypoint: /bin/bash
+    stdin_open: true
+    tty: true
+    
+    

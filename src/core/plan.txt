@@ -1,0 +1,41 @@
+// An api to interactive with loabalancer (ie. web servert)
+// take incoming request -> convert it to local entity.
+// for the local entity request -> figure out a worker server
+// send request to the worker servert -> wait and get response from the worker server
+// return the response from woker server as response to the incoming request.
+
+
+
+/// CORE
+// Entities and helpers
+// Entity: LoadBalancer (has derivatives based on balancing algorithm)
+// Entity: InternalRequest (converted from incoming http request)
+// Entity: InternalResponse (converted from woker server's response)
+// Entity: Worker (to represent the workerserver)
+
+
+// LoadBalancer
+// *properites*
+//  - List of available nodes
+//  - function that takes InternalRequest and returns Worker.
+//  - function that sends request to given Worker and returns an InternalResponse.
+//  - A main function that takes InternalRequest and returns InternalResponse (utilize tha above functions)
+
+
+// InternalRequest
+// *prorerties*
+// - request path
+// - request body
+// - request method
+
+// InternalResponse:
+// *properties*
+// - response body.
+// - response status.
+// - response headers.
+
+// Worker
+// *properties*
+// - ip address
+// - load/weight
+// - status (ACTIVE / DEAD)
