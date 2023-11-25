@@ -36,7 +36,7 @@ func (rrb *RoundRobinBalancer) BalanceRequest(request request.InternalRequest) r
 }
 
 // For Round robin - load the workers and link the works in circular fashion
-func (rrb *RoundRobinBalancer) initaliseLeastConnectionWorkers() error {
+func (rrb *RoundRobinBalancer) initaliseRoundRobinWorkers() error {
 	rrb.loadWorkers()
 	totalLength := len(rrb.Workers)
 	for indx, _ := range rrb.Workers {
@@ -50,7 +50,7 @@ func (rrb *RoundRobinBalancer) initaliseLeastConnectionWorkers() error {
 // contructor to create RoundRobingBalancer
 func CreateRoundRobinBalancer() *RoundRobinBalancer {
 	rrb := &RoundRobinBalancer{}
-	rrb.initaliseLeastConnectionWorkers()
+	rrb.initaliseRoundRobinWorkers()
 	return rrb
 }
 
