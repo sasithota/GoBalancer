@@ -8,21 +8,17 @@ type RoundRobinWorker struct {
 	TotalWorkersLength int
 }
 
-func createWorker(ipAddress string, load int, status string) *RoundRobinWorker {
+func createWorker(workDetails coreWorker.WorkerDetails) *RoundRobinWorker {
 	return &RoundRobinWorker{
-		WorkerDetails: *coreWorker.CreateWorkerDetails(ipAddress, load, status),
+		WorkerDetails: workDetails,
 	}
 }
 
-func createDefaultWorker(ipAddress string) *RoundRobinWorker {
-	return createWorker(ipAddress, 0, "ACTIVE")
-}
-
 func CreateWorkersFromFile() []*RoundRobinWorker {
-	linesFromFile := coreWorker.GetLinesFromFile()
+	workerDetailsFromFile := coreWorker.GetWorkerDetails()
 	rrWorkers := []*RoundRobinWorker{}
-	for _, line := range linesFromFile {
-		rrWorkers = append(rrWorkers, createDefaultWorker(line))
+	for _, line := range workerDetailsFromFile {
+		rrWorkers = append(rrWorkers, createWorker(line))
 	}
 	return rrWorkers
 }
