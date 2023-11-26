@@ -1,6 +1,6 @@
 package roundRobinWorker
 
-import "loadbalancer.com/worker/coreWorker"
+import "loadbalancer.com/balancer/core/worker/coreWorker"
 
 type RoundRobinWorker struct {
 	coreWorker.WorkerDetails
@@ -39,3 +39,31 @@ func (rrw *RoundRobinWorker) GetNextAvailableWorker() (*RoundRobinWorker) {
 	}
 	return nil
 }
+
+func (rrw *RoundRobinWorker) GetIpAddress() string {
+	return rrw.WorkerDetails.IpAddress
+}
+
+
+// [
+//     {
+//         "IpAddress": "127.9.32.1",
+//         "Load": 0,
+//         "status": "ACTIVE"
+//     },
+//     {
+//         "IpAddress": "182.32.44.2",
+//         "Load": 0,
+//         "status": "ACTIVE"
+//     },
+//     {
+//         "IpAddress": "132.4.2.33",
+//         "Load": 0,
+//         "status": "ACTIVE"
+//     },
+//     {
+//         "IpAddress": "23.4.55.5",
+//         "Load": 0,
+//         "status": "ACTIVE"
+//     }
+// ]

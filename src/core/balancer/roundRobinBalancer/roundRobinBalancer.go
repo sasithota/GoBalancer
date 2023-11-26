@@ -1,9 +1,9 @@
 package roundRobinBalancer
 
 import (
-	"loadbalancer.com/request"
-	"loadbalancer.com/response"
-	"loadbalancer.com/worker/roundRobinWorker"
+	"sync"
+	"loadbalancer.com/balancer/core/request"
+	"loadbalancer.com/balancer/core/worker/roundRobinWorker"
 )
 
 type RoundRobinBalancer struct {
@@ -24,17 +24,6 @@ func (rrb *RoundRobinBalancer) getWorkerForRequest(request request.InternalReque
 	return nextWorker
 }
 
-// Ping the worker with the request and return the response
-func (rrb *RoundRobinBalancer) getResponseFromWorker(rrw roundRobinWorker.RoundRobinWorker, request request.InternalRequest) response.InternalResponse {
-	// TODO
-	return response.CreateFakeResponse(rrw.IpAddress)
-}
-
-func (rrb *RoundRobinBalancer) BalanceRequest(request request.InternalRequest) response.InternalResponse {
-	rrw := rrb.getWorkerForRequest(request)
-	return rrb.getResponseFromWorker(*rrw, request)
-}
-
 // For Round robin - load the workers and link the works in circular fashion
 func (rrb *RoundRobinBalancer) initaliseRoundRobinWorkers() error {
 	rrb.loadWorkers()
@@ -45,6 +34,23 @@ func (rrb *RoundRobinBalancer) initaliseRoundRobinWorkers() error {
 	}
 	rrb.NextWorker = rrb.Workers[0]
 	return nil
+}
+
+var (
+	loadbalancer *RoundRobinBalancer
+	once sync.Once
+)
+
+func GetRoundRobinLoadBalancer() *RoundRobinBalancer {
+	once.Do(func() {
+		loadbalancer = &RoundRobinBalancer{}
+		loadbalancer.initaliseRoundRobinWorkers()
+	})
+	return loadbalancer
+}
+
+func GetWorkerForRequest(rrb *RoundRobinBalancer, request request.InternalRequest) *roundRobinWorker.RoundRobinWorker {
+	return rrb.getWorkerForRequest(request)
 }
 
 // contructor to create RoundRobingBalancer
